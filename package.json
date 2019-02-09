@@ -1,0 +1,19 @@
+{
+  "name": "adopt-me",
+  "version": "1.0.0",
+  "description": "Adoption React Site for Pets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilliamChou06/adopt-me.git"
+  },
+  "author": "Guillermo Chou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WilliamChou06/adopt-me/issues"
+  },
+  "homepage": "https://github.com/WilliamChou06/adopt-me#readme"
+}
