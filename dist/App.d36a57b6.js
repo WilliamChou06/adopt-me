@@ -25613,10 +25613,69 @@ var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Pet = function Pet(props) {
-  return _react.default.createElement("div", null, _react.default.createElement("h1", null, props.name), _react.default.createElement("h2", null, props.animal), _react.default.createElement("h2", null, props.breed));
-};
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Pet =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Pet, _React$Component);
+
+  function Pet() {
+    _classCallCheck(this, Pet);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Pet).apply(this, arguments));
+  }
+
+  _createClass(Pet, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          animal = _this$props.animal,
+          name = _this$props.name,
+          breed = _this$props.breed,
+          media = _this$props.media,
+          location = _this$props.location;
+      var photos = [];
+
+      if (media && media.photos && media.photos.photo) {
+        photos = media.photos.photo.filter(function (photo) {
+          return photo['@size'] === 'pn';
+        });
+      }
+
+      return _react.default.createElement("div", {
+        className: "pet"
+      }, _react.default.createElement("div", {
+        className: "image-container"
+      }, _react.default.createElement("img", {
+        src: photos[0].value,
+        alt: name
+      })), _react.default.createElement("div", {
+        className: "info"
+      }, _react.default.createElement("h1", null, name), _react.default.createElement("h2", null, animal, "  -  ", breed, "  -  ", location, "  ")));
+    }
+  }]);
+
+  return Pet;
+}(_react.default.Component);
+
+;
 var _default = Pet;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
@@ -25651,8 +25710,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var petfinder = (0, _petfinderClient.default)({
-  key: undefined,
-  secret: undefined
+  key: "314a25d73aee2056868c446116e253a5",
+  secret: "abae69ec9f628ada9b25800649c0d4b4"
 });
 
 var App =
@@ -25660,34 +25719,64 @@ var App =
 function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App() {
+  function App(props) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+    _this.state = {
+      pets: []
+    };
+    return _this;
   }
 
   _createClass(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      petfinder.breed.list({
-        animal: "dog"
-      }).then(console.log, console.error);
+      var _this2 = this;
+
+      petfinder.pet.find({
+        location: "Seattle, WA",
+        output: "full"
+      }).then(function (data) {
+        var pets;
+
+        if (data.petfinder.pets && data.petfinder.pets.pet) {
+          if (Array.isArray(data.petfinder.pets.pet)) {
+            pets = data.petfinder.pets.pet;
+          } else {
+            pets = [data.petfinder.pets.pet];
+          }
+        } else {
+          pets = [];
+        }
+
+        _this2.setState({
+          pets: pets
+        });
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, _react.default.createElement("h1", null, "Adopt Me!"), _react.default.createElement(_Pet.default, {
-        name: "Luna",
-        animal: "dog",
-        breed: "Havanese"
-      }), _react.default.createElement(_Pet.default, {
-        name: "Marco",
-        animal: "dog",
-        breed: "German Sheperd"
-      }), _react.default.createElement(_Pet.default, {
-        name: "Polo",
-        animal: "cat",
-        breed: "Puss"
+      return _react.default.createElement("div", null, _react.default.createElement("h1", null, "Adopt Me!"), this.state.pets.map(function (pet) {
+        var breed;
+
+        if (Array.isArray(pet.breeds.breed)) {
+          breed = pet.breeds.breed.join(', ');
+        } else {
+          breed = pet.breeds.breed;
+        }
+
+        return _react.default.createElement(_Pet.default, {
+          animal: pet.animal,
+          breed: breed,
+          key: pet.id,
+          name: pet.name,
+          media: pet.media,
+          location: "".concat(pet.contact.city, ", ").concat(pet.contact.state)
+        });
       }));
     }
   }]);
@@ -25723,7 +25812,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55664" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55031" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

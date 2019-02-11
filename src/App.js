@@ -8,21 +8,60 @@ import Pet from './Pet';
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
-})
+});
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pets: []
+    };
+  }
   componentDidMount() {
-    petfinder.breed.list({ animal: `dog` }).then(console.log, console.error)
+    petfinder.pet
+      .find({ location: `Seattle, WA`, output: `full` })
+      .then(data => {
+        let pets;
+        if (data.petfinder.pets && data.petfinder.pets.pet) {
+          if (Array.isArray(data.petfinder.pets.pet)) {
+            pets = data.petfinder.pets.pet;
+          } else {
+            pets = [data.petfinder.pets.pet];
+          }
+        } else {
+          pets = [];
+        }
+
+        this.setState({
+          pets
+        });
+      });
   }
   render() {
     return (
       <div>
         <h1>Adopt Me!</h1>
-        <Pet name="Luna" animal="dog" breed="Havanese" />
-        <Pet name="Marco" animal="dog" breed="German Sheperd" />
-        <Pet name="Polo" animal="cat" breed="Puss" />
+        {this.state.pets.map(pet => {
+          let breed;
+          if (Array.isArray(pet.breeds.breed)) {
+            breed = pet.breeds.breed.join(', ');
+          } else {
+            breed = pet.breeds.breed;
+          }
+          return (
+            <Pet
+              animal={pet.animal}
+              breed={breed}
+              key={pet.id}
+              name={pet.name}
+              media={pet.media}
+              location={`${pet.contact.city}, ${pet.contact.state}`}
+            />
+          );
+        })}
       </div>
-    )
+    );
   }
 }
 
