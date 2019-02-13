@@ -6,13 +6,6 @@ import Details from './Details';
 import Results from './Results';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      pets: []
-    };
-  }
   
   render() {
     return (
