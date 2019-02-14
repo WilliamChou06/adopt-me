@@ -15,13 +15,13 @@ class Details extends React.Component {
   componentDidMount() {
     petfinder.pet
       .get({
-        output: 'full',
+        output: `full`,
         id: this.props.id
       })
       .then(data => {
         let breed;
         if (Array.isArray(data.petfinder.pet.breeds.breed)){
-          breed = data.petfinder.pet.breeds.breed.join(', ');
+          breed = data.petfinder.pet.breeds.breed.join(`, `);
         } else {
           breed = [data.petfinder.pet.breeds.breed]
         }
@@ -44,10 +44,11 @@ class Details extends React.Component {
       return <h1>Loading...</h1>
     }
 
-    const { animal, breed, location, description } = this.state;
+    const { animal, breed, location, description, media } = this.state;
 
     return (
       <div className="details">
+        <Carousel media = {media} />
         <div>
           <h1>{name}</h1>
           <h2>{`${animal} - ${breed} - ${location}`}</h2>
