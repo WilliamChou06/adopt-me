@@ -9,7 +9,8 @@
     "react/prop-types": 0,
     "eqeqeq": ["error", "always"],
     "quotes": ["error", "backtick"],
-    "jsx-quotes": ["error", "prefer-double"]
+    "jsx-quotes": ["error", "prefer-double"],
+    "no-console": 1
   },
   "plugins": ["react", "import", "jsx-a11y"],
   "parserOptions": {
