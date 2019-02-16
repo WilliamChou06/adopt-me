@@ -11,7 +11,8 @@ class Search extends React.Component {
   state = {
     location: `Seattle, WA`,
     animal: ``,
-    breed: ``
+    breed: ``,
+    breeds: []
   }
 
   handleLocationChange = e => {
